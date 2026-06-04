@@ -25,7 +25,8 @@ private val LightColorScheme = lightColorScheme(
     surface = ZadLightSurface,
     onSurface = ZadLightText,
     secondary = ZadLightGreen,
-    onSecondary = ZadLightBackground
+    onSecondary = ZadLightBackground,
+    secondaryFixed = ZadSurface
 )
 
 @Composable
