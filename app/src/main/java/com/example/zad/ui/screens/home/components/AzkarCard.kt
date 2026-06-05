@@ -3,6 +3,7 @@ package com.example.zad.ui.screens.home.components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,11 +21,12 @@ import com.example.zad.ui.theme.ZadTheme
 fun AzkarCard(
     onClick: () -> Unit = {},
     title: String,
-    subtitle: String
+    subtitle: String,
+    modifier: Modifier
 ){
     Card(
         onClick = onClick,
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(14.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
@@ -60,7 +62,8 @@ fun AzkarCardPreview(){
     ZadTheme {
         AzkarCard(
             title = "أذكار الصباح",
-            subtitle = "اللهم بك أصبحنا"
+            subtitle = "اللهم بك أصبحنا",
+            modifier = Modifier
         )
     }
 }

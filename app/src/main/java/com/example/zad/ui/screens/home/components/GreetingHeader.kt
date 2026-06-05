@@ -22,7 +22,7 @@ fun GreetingHeader(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(ZadBackground)
+            .background(MaterialTheme.colorScheme.background)
             .padding(12.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
