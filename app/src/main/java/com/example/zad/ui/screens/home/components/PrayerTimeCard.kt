@@ -39,7 +39,7 @@ fun PrayerTimeCard(
             .padding(16.dp),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondaryFixed
+            containerColor = MaterialTheme.colorScheme.surface
         )
     ) {
         Column(
@@ -78,7 +78,7 @@ fun NextPryerSection(
         Column (verticalArrangement = Arrangement.spacedBy(4.dp)){
             Text(
                 text = nameAr,
-                color = MaterialTheme.colorScheme.onSecondary,
+                color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.titleLarge
             )
             Text(
@@ -135,7 +135,7 @@ fun AllPryerTimesRow(prayerTimes: List<PrayerTime>) {
                     color = if (prayer.isNext)
                         MaterialTheme.colorScheme.primary
                     else
-                        MaterialTheme.colorScheme.onPrimary,
+                        MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.labelSmall
                 )
             }

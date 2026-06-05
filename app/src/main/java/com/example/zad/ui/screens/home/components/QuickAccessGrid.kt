@@ -3,6 +3,7 @@ package com.example.zad.ui.screens.home.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -38,22 +39,17 @@ fun QuickAccessGrid(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        Text(
-            text = "QUICK ACCESS",
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
-        )
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
+        FlowRow(
             modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(0.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            maxItemsInEachRow = 2
         ) {
-            items(items) { item ->
+            items.forEach { item ->
                 QuickAccessCard(
                     item = item,
-                    onClick = {onItemClick(item)}
+                    onClick = {onItemClick(item)},
+                    modifier = Modifier.fillMaxWidth(0.48f)
                 )
             }
         }
@@ -63,11 +59,12 @@ fun QuickAccessGrid(
 @Composable
 fun QuickAccessCard(
     item: QuickAccessItem,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    modifier: Modifier
 ){
     Card(
         onClick = onClick,
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier,
         shape = RoundedCornerShape(14.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface

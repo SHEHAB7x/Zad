@@ -1,12 +1,10 @@
 package com.example.zad.ui.screens.home
 
-import android.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -22,7 +20,8 @@ import com.example.zad.ui.screens.home.components.QuickAccessGrid
 import com.example.zad.ui.theme.ZadTheme
 
 @Composable
-fun HomeScreen(){
+fun HomeScreen() {
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -51,10 +50,10 @@ fun HomeScreen(){
             title    = "أذكار الصباح",
             subtitle = "Morning azkar · 12 remaining",
             onClick  = {
-                // TODO: navigate to AzkarScreen
+
             },
             modifier = Modifier.padding(horizontal = 16.dp)
-        ) // implementation of onclick here maybe we should use navigation here to implement
+        )
 
 
     }
