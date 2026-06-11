@@ -1,7 +1,9 @@
 package com.example.zad.ui.navigation
 
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -10,6 +12,7 @@ import com.example.zad.ui.screens.home.HomeScreen
 @Composable
 fun ZadNavGraph(navController: NavHostController){
     NavHost(
+        modifier = Modifier.safeDrawingPadding(),
         navController = navController,
         startDestination = Screen.Home.route
     ){

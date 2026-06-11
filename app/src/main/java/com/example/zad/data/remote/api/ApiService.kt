@@ -18,7 +18,7 @@ interface ApiService {
         @Query("language") language: String = "ar"
     ) : SurahListResponse
 
-    @GET("verses/by_chapter/{chapter_number")
+    @GET("verses/by_chapter/{chapter_number}")
     suspend fun getAyahsByChapter(@Path("chapter_number") surahNumber: Int) : AyahListResponse
 
     companion object{

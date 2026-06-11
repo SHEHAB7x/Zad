@@ -21,7 +21,6 @@ import com.example.zad.ui.theme.ZadTheme
 
 @Composable
 fun HomeScreen() {
-
     Column(
         modifier = Modifier
             .fillMaxSize()

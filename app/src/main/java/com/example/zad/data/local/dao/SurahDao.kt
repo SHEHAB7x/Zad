@@ -14,7 +14,7 @@ interface SurahDao {
     suspend fun insertSurahList(surahs: List<SurahEntity>)
 
     @Query("SELECT * FROM surah_table")
-    suspend fun getSurahList(): Flow<List<SurahEntity>>
+    fun getSurahList(): Flow<List<SurahEntity>>
 
     @Query("SELECT COUNT(*) FROM surah_table")
     suspend fun getSurahCount(): Int
