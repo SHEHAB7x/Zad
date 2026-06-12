@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.zad"
+    namespace = "com.shehab.zad"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.zad"
+        applicationId = "com.shehab.zad"
         minSdk = 26
         targetSdk = 36
         versionCode = 1

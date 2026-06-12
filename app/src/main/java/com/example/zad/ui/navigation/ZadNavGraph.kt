@@ -5,8 +5,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.example.zad.ui.screens.Ayah.AyahScreen
+import com.example.zad.ui.screens.surahs.SurahListScreen
 import com.example.zad.ui.screens.home.HomeScreen
 
 @Composable
@@ -20,7 +24,20 @@ fun ZadNavGraph(navController: NavHostController){
             HomeScreen()
         }
         composable(Screen.Quran.route) {
-            Text("Quran — coming soon")   // placeholder until we build it
+            SurahListScreen(
+                onSurahClick = { surahNumber ->
+                    navController.navigate(Screen.Ayah.createRoute(surahNumber))
+                }
+            )
+        }
+        composable (
+            route = Screen.Ayah.route,
+            arguments = listOf(
+                navArgument("surahNumber") { type = NavType.IntType }
+            )
+            ) { backStackEntry ->
+            val surahNumber = backStackEntry.arguments?.getInt("surahNumber") ?: 1
+            AyahScreen(surahNumber = surahNumber)
         }
         composable(Screen.Prayer.route) {
             Text("Prayer — coming soon")

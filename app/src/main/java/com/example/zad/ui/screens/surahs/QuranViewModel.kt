@@ -1,4 +1,4 @@
-package com.example.zad.ui.screens.Surahs
+package com.example.zad.ui.screens.surahs
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

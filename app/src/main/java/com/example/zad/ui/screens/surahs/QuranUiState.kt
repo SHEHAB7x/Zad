@@ -1,4 +1,4 @@
-package com.example.zad.ui.screens.Surahs
+package com.example.zad.ui.screens.surahs
 
 import com.example.zad.domain.model.Surah
 

@@ -7,4 +7,7 @@ sealed class Screen(val route: String) {
     data object Tafseer : Screen("tafseer")
     data object Azkar : Screen("azkar")
     data object Qibla : Screen("qibla")
+    data object Ayah : Screen("ayah/{surahNumber}"){
+        fun createRoute(surahNumber: Int) = "ayah/$surahNumber"
+    }
 }

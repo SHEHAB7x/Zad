@@ -1,4 +1,4 @@
-package com.example.zad.ui.screens.Surahs
+package com.example.zad.ui.screens.surahs
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
