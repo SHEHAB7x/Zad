@@ -1,5 +1,8 @@
 package com.shehab.zad.ui.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,9 +17,14 @@ import com.shehab.zad.ui.screens.surahs.SurahListScreen
 import com.shehab.zad.ui.screens.home.HomeScreen
 
 @Composable
-fun ZadNavGraph(navController: NavHostController){
+fun ZadNavGraph(
+    navController: NavHostController,
+    paddingValues: PaddingValues
+){
     NavHost(
-        modifier = Modifier.safeDrawingPadding(),
+        modifier = Modifier
+            .padding(paddingValues)
+            .fillMaxSize(),
         navController = navController,
         startDestination = Screen.Home.route
     ){
@@ -50,6 +58,9 @@ fun ZadNavGraph(navController: NavHostController){
         }
         composable(Screen.Qibla.route) {
             Text("Qibla — coming soon")
+        }
+        composable(Screen.Settings.route) {
+            Text("Settings - coming soon")
         }
     }
 }
