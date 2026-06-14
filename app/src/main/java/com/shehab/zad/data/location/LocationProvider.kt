@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
-import androidx.navigationevent.NavigationEventDispatcher
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
@@ -17,6 +16,7 @@ class LocationProvider @Inject constructor(
 ) {
     private val fusedClient = LocationServices
         .getFusedLocationProviderClient(context)
+
     suspend fun getCurrentLocation(): Pair<Double, Double>?{
         val hasPermission = ContextCompat.checkSelfPermission(
             context,
@@ -42,4 +42,5 @@ class LocationProvider @Inject constructor(
             null
         }
     }
+
 }
