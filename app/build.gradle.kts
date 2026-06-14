@@ -78,4 +78,13 @@ dependencies {
 
     // Hilt navigation
     implementation(libs.androidx.hilt.navigation.compose)
+
+    // Adhan
+    //implementation(libs.adhan)
+    implementation(libs.adhan2)
+
+    // app/build.gradle.kts
+    implementation(libs.kotlinx.coroutines.play.services)
+    implementation(libs.play.services.location)
+
 }
