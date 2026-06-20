@@ -3,7 +3,6 @@ package com.shehab.zad.ui.navigation
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -12,7 +11,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.shehab.zad.ui.screens.Ayah.AyahScreen
+import com.shehab.zad.ui.screens.ayah.AyahScreen
 import com.shehab.zad.ui.screens.surahs.SurahListScreen
 import com.shehab.zad.ui.screens.home.HomeScreen
 

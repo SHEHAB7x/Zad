@@ -18,8 +18,6 @@ class CalculatePrayerTimesUseCase @Inject constructor(
 ) {
     @OptIn(ExperimentalTime::class)
     suspend operator fun invoke(
-        latitude: Double,
-        longitude: Double,
         date: LocalDate
     ): Resource<PrayerTimes> {
 
