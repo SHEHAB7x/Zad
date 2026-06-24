@@ -155,8 +155,6 @@ val samplePrayerTimes = listOf(
 @Composable
 fun PrayerTimeCardPreview(){
     ZadTheme {
-        PrayerTimeCard(
-
-        )
+        PrayerTimeCard()
     }
 }

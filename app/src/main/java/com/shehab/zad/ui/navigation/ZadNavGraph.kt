@@ -14,6 +14,8 @@ import androidx.navigation.navArgument
 import com.shehab.zad.ui.screens.ayah.AyahScreen
 import com.shehab.zad.ui.screens.surahs.SurahListScreen
 import com.shehab.zad.ui.screens.home.HomeScreen
+import com.shehab.zad.ui.screens.prayer.PrayerRoute
+import com.shehab.zad.ui.screens.prayer.PrayerScreen
 
 @Composable
 fun ZadNavGraph(
@@ -47,7 +49,7 @@ fun ZadNavGraph(
             AyahScreen(surahNumber = surahNumber)
         }
         composable(Screen.Prayer.route) {
-            Text("Prayer — coming soon")
+            PrayerRoute()
         }
         composable(Screen.Azkar.route) {
             Text("Azkar — coming soon")

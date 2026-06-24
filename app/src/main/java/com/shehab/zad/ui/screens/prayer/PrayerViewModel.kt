@@ -14,74 +14,93 @@ import kotlinx.coroutines.launch
 import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
 class PrayerViewModel @Inject constructor(
     private val useCase: CalculatePrayerTimesUseCase
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(PrayerUiState())
-    val uiState : StateFlow<PrayerUiState> = _uiState.asStateFlow()
 
-    init {
-        getPrayerTimes()
-    }
+    private val _uiState = MutableStateFlow(PrayerUiState())
+    val uiState: StateFlow<PrayerUiState> = _uiState.asStateFlow()
+
+    init { getPrayerTimes() }
 
     fun getPrayerTimes() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
 
-            val result = useCase.invoke(LocalDate.now())
-
-            when (result){
+            when (val result = useCase.invoke(LocalDate.now())) {
                 is Resource.Success -> {
                     val prayerTimes = result.data!!
-                    val (nextName, timeLeft) = calculateNextPrayer(prayerTimes)
+                    val prayerRows  = buildPrayerRows(prayerTimes)
+                    val nextRow     = prayerRows.firstOrNull { it.status == PrayerStatus.NEXT }
+                    val timeLeft    = nextRow?.let { calculateTimeLeft(it.rawTime) }
 
                     _uiState.update {
                         it.copy(
-                            isLoading = false,
-                            prayerTimes = prayerTimes,
-                            nextPrayer = nextName,
-                            timeUntilNext = timeLeft,
-                            error = null
+                            isLoading      = false,
+                            prayerTimes    = prayerTimes,
+                            prayerRows     = prayerRows,
+                            nextPrayerRow  = nextRow,
+                            timeUntilNext  = timeLeft,
+                            error          = null
                         )
                     }
-
                 }
                 is Resource.Error -> {
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            error = result.message
-                        )
-                    }
+                    _uiState.update { it.copy(isLoading = false, error = result.message) }
                 }
                 is Resource.Loading -> Unit
             }
         }
     }
 
-    private fun calculateNextPrayer(prayerTimes: PrayerTimes): Pair<String, String> {
+    private fun buildPrayerRows(prayerTimes: PrayerTimes): List<PrayerRowData> {
         val now = LocalTime.now()
+        val formatter = DateTimeFormatter.ofPattern("h:mm a")
 
-        val prayers = listOf(
-            "الفجر" to prayerTimes.fajr,
-            "الظهر"   to prayerTimes.dhuhr,
-            "العصر"   to prayerTimes.asr,
-            "المغرب" to prayerTimes.maghrib,
-            "العشاء" to prayerTimes.isha
+        data class RawPrayer(val nameAr: String, val nameEn: String, val time: LocalTime, val icon: PrayerIcon)
+
+        val raw = listOf(
+            RawPrayer("الفجر",   "Fajr",    prayerTimes.fajr,    PrayerIcon.FAJR),
+            RawPrayer("الشروق", "Sunrise", prayerTimes.sunrise, PrayerIcon.SUNRISE),
+            RawPrayer("الظهر",   "Dhuhr",   prayerTimes.dhuhr,   PrayerIcon.DHUHR),
+            RawPrayer("العصر",   "Asr",     prayerTimes.asr,     PrayerIcon.ASR),
+            RawPrayer("المغرب", "Maghrib", prayerTimes.maghrib, PrayerIcon.MAGHRIB),
+            RawPrayer("العشاء", "Isha",    prayerTimes.isha,    PrayerIcon.ISHA)
         )
 
-        val next = prayers.firstOrNull { (_, time) -> time.isAfter(now) }
-            ?: prayers.first()
+        val nextIndex = raw.indexOfFirst { it.time.isAfter(now) }
+            .let { if (it == -1) 0 else it }
 
-        val duration = Duration.between(now, next.second)
-        val hours = duration.toHours()
+        return raw.mapIndexed { index, p ->
+            val status = when {
+                index == nextIndex      -> PrayerStatus.NEXT
+                p.time.isBefore(now)    -> PrayerStatus.DONE
+                else                     -> PrayerStatus.UPCOMING
+            }
+            PrayerRowData(
+                nameAr  = p.nameAr,
+                nameEn  = p.nameEn,
+                time    = p.time.format(formatter),
+                rawTime = p.time,
+                status  = status,
+                icon    = p.icon
+            )
+        }
+    }
+
+    private fun calculateTimeLeft(nextTime: LocalTime): String {
+        val now = LocalTime.now()
+        val duration = if (nextTime.isAfter(now))
+            Duration.between(now, nextTime)
+        else
+            Duration.between(now, LocalTime.MAX).plus(Duration.between(LocalTime.MIN, nextTime))
+
+        val hours   = duration.toHours()
         val minutes = duration.toMinutes() % 60
-
-        val timeLeftText = "بعد $hours ساعة و$minutes دقيقة"
-
-        return next.first to timeLeftText
+        return "بعد $hours ساعة و$minutes دقيقة"
     }
 }
