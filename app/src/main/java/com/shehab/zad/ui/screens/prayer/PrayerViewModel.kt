@@ -25,7 +25,6 @@ class PrayerViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(PrayerUiState())
     val uiState: StateFlow<PrayerUiState> = _uiState.asStateFlow()
 
-    init { getPrayerTimes() }
 
     fun getPrayerTimes() {
         viewModelScope.launch {

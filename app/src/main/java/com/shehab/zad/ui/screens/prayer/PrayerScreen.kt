@@ -1,5 +1,6 @@
 package com.shehab.zad.ui.screens.prayer
 
+import android.Manifest.permission
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -46,11 +47,15 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.TextStyle
 import java.util.Locale
+import android.Manifest
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.runtime.LaunchedEffect
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 
 @Composable
-fun PrayerScreen(
-    uiState : PrayerUiState
-){
+fun PrayerScreen(uiState: PrayerUiState) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -59,26 +64,76 @@ fun PrayerScreen(
     ) {
         PrayerHeader()
 
-        uiState.nextPrayerRow?.let { next ->
-            NextPrayerCard(
-                nextPrayerName   = next.nameAr,
-                nextPrayerNameEn = next.nameEn,
-                nextPrayerTime   = next.time,
-                timeUntilNext    = uiState.timeUntilNext ?: ""
-            )
+        when {
+            // Loading state
+            uiState.isLoading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(48.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            // Error state
+            uiState.error != null -> {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(32.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Text(
+                        text = uiState.error,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                    )
+                }
+            }
 
-            PrayerList(prayers = uiState.prayerRows)
+            // Success state
+            uiState.nextPrayerRow != null -> {
+                NextPrayerCard(
+                    nextPrayerName   = uiState.nextPrayerRow.nameAr,
+                    nextPrayerNameEn = uiState.nextPrayerRow.nameEn,
+                    nextPrayerTime   = uiState.nextPrayerRow.time,
+                    timeUntilNext    = uiState.timeUntilNext ?: ""
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                PrayerList(prayers = uiState.prayerRows)
+            }
         }
     }
 }
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun PrayerRoute(
-    viewmodel: PrayerViewModel = hiltViewModel()
+    viewModel: PrayerViewModel = hiltViewModel()
 ){
-    val uiState by viewmodel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
+
+    val locationPermission = rememberPermissionState(
+        permission.ACCESS_FINE_LOCATION
+    ){ isGranted ->
+        if (isGranted) viewModel.getPrayerTimes()
+    }
+
+    LaunchedEffect(Unit) {
+        if (!locationPermission.status.isGranted) {
+            locationPermission.launchPermissionRequest()
+        } else {
+            viewModel.getPrayerTimes()
+        }
+    }
+
     PrayerScreen(
         uiState = uiState
     )
