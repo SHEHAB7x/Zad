@@ -47,7 +47,6 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.TextStyle
 import java.util.Locale
-import android.Manifest
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.LaunchedEffect
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -62,7 +61,10 @@ fun PrayerScreen(uiState: PrayerUiState) {
             .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
     ) {
-        PrayerHeader()
+        PrayerHeader(
+            cityName = uiState.cityName,
+            dateText = uiState.dateText
+        )
 
         when {
             // Loading state
@@ -140,8 +142,7 @@ fun PrayerRoute(
 }
 
 @Composable
-fun PrayerHeader(
-) {
+fun PrayerHeader(cityName: String?, dateText: String?) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -165,7 +166,7 @@ fun PrayerHeader(
                     style = MaterialTheme.typography.titleLarge
                 )
                 Text(
-                    text = "${LocalDate.now()}",
+                    text = dateText ?: "",
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
                 )
@@ -182,7 +183,7 @@ fun PrayerHeader(
                     modifier = Modifier.size(16.dp)
                 )
                 Text(
-                    text = "القاهرة",
+                    text = cityName ?: "...",
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
                 )
