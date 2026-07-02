@@ -52,7 +52,6 @@ class PrayerViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(
                             isLoading      = false,
-                            prayerTimes    = prayerTimes,
                             prayerRows     = prayerRows,
                             nextPrayerRow  = nextRow,
                             timeUntilNext  = timeLeft,
