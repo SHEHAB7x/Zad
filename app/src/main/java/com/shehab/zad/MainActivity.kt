@@ -6,9 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.Scaffold
 import androidx.navigation.compose.rememberNavController
-import com.shehab.zad.ui.navigation.ZadBottomBar
-import com.shehab.zad.ui.navigation.ZadNavGraph
-import com.shehab.zad.ui.theme.ZadTheme
+import com.shehab.zad.presentation.navigation.ZadBottomBar
+import com.shehab.zad.presentation.navigation.ZadNavGraph
+import com.shehab.zad.presentation.theme.ZadTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
