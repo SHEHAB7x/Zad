@@ -17,6 +17,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.shehab.zad.presentation.screens.prayer.PrayerRowData
+import com.shehab.zad.presentation.screens.prayer.PrayerStatus
 import com.shehab.zad.presentation.theme.ZadTheme
 
 data class PrayerTime(
@@ -27,11 +29,11 @@ data class PrayerTime(
 
 @Composable
 fun PrayerTimeCard(
-    nextPrayerName: String = "العصر",
-    nextPrayerNameEn: String = "Asr next pryer",
-    nextPrayerTime: String = "4:32",
-    timeUntilNextPrayer: String = "in 1h 23m",
-    prayerTimes: List<PrayerTime> = samplePrayerTimes
+    nextPrayerName: String,
+    nextPrayerNameEn: String,
+    nextPrayerTime: String,
+    timeUntilNextPrayer: String,
+    prayerTimes: List<PrayerRowData>
 ){
     Card(
         modifier = Modifier
@@ -113,7 +115,7 @@ fun NextPryerSection(
 }
 
 @Composable
-fun AllPryerTimesRow(prayerTimes: List<PrayerTime>) {
+fun AllPryerTimesRow(prayerTimes: List<PrayerRowData>) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -126,13 +128,13 @@ fun AllPryerTimesRow(prayerTimes: List<PrayerTime>) {
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Text(
-                    text = (prayer.name),
+                    text = (prayer.nameAr),
                     color = MaterialTheme.colorScheme.outline,
                     style = MaterialTheme.typography.labelSmall
                 )
                 Text(
                     text = (prayer.time),
-                    color = if (prayer.isNext)
+                    color = if (prayer.status == PrayerStatus.NEXT)
                         MaterialTheme.colorScheme.primary
                     else
                         MaterialTheme.colorScheme.onSurface,
@@ -143,18 +145,12 @@ fun AllPryerTimesRow(prayerTimes: List<PrayerTime>) {
     }
 }
 
-val samplePrayerTimes = listOf(
-    PrayerTime("Fajr",    "4:12"),
-    PrayerTime("Dhuhr",   "12:02"),
-    PrayerTime("Asr",     "4:32",  isNext = true),
-    PrayerTime("Maghrib", "6:51"),
-    PrayerTime("Isha",    "8:21")
-)
 
+/*
 @Preview
 @Composable
 fun PrayerTimeCardPreview(){
     ZadTheme {
         PrayerTimeCard()
     }
-}
+}*/

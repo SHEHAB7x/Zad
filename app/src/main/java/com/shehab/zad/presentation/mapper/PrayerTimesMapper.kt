@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter
 
 fun PrayerTimes.toPrayerRowList(): List<PrayerRowData> {
     val now = LocalTime.now()
-    val formatter = DateTimeFormatter.ofPattern("h:mm a")
+    val formatter = DateTimeFormatter.ofPattern("HH:mm")
 
     data class RawPrayer(val nameAr: String, val nameEn: String, val time: LocalTime, val icon: PrayerIcon)
 

@@ -7,7 +7,7 @@ data class HomeUiState(
     val prayerRows: List<PrayerRowData> = emptyList(),
     val nextPrayerRow: PrayerRowData?  = null,
     val timeUntilNext: String?         = null,
-    val dateText: String?              = null,
+    val dateText: String               = "",
     val greeting: String = "أهلاً" ,
     val error: String?                 = null,
     val isDay: Boolean                 = true

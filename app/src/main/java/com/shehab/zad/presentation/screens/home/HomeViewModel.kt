@@ -21,11 +21,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val calculatePrayerTimes: CalculatePrayerTimesUseCase,
-    private val getCityName: GetCityNameUseCase
+    private val calculatePrayerTimes: CalculatePrayerTimesUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
+
+    init {
+        loadHomeData()
+    }
 
     fun loadHomeData() {
         viewModelScope.launch {

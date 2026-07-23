@@ -1,54 +1,66 @@
 package com.shehab.zad.presentation.screens.home.components
 
-import androidx.compose.foundation.background
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.shehab.zad.presentation.theme.ZadTheme
 
 @Composable
 fun GreetingHeader(
-    greeting: String = "Good morning",
-    dateText: String = "الثلاثاء · 15 ذو الحجة 1446"
+    greeting: String,
+    dateText: String,
+    @DrawableRes backgroundImage: Int
 ) {
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(12.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+            .height(220.dp)
     ) {
-        Text(
-            text = "السلام عليكم",
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
-            style = MaterialTheme.typography.bodyMedium
-        )
-        Text(
-            text = greeting,
-            color = MaterialTheme.colorScheme.onSecondary,
-            style = MaterialTheme.typography.titleMedium
-        )
-        Text(
-            text = dateText, // المفروض يكون تاريخ حقيقي بيتغير بتغير التاريخ تلقائي
-            color = MaterialTheme.colorScheme.primary,
-            style = MaterialTheme.typography.labelSmall
-        )
-    }
 
+        Image(
+            painter = painterResource(backgroundImage),
+            contentDescription = null,
+            modifier = Modifier.matchParentSize(),
+            contentScale = ContentScale.Crop
+        )
 
-}
+        Column(
+            modifier = Modifier
+                .matchParentSize()
+                .statusBarsPadding()
+                .padding(20.dp),
+            verticalArrangement = Arrangement.Bottom
+        ) {
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingHeaderPreview(){
-    ZadTheme {
-        GreetingHeader()
+            Text(
+                text = "السلام عليكم",
+                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f),
+                style = MaterialTheme.typography.bodyMedium
+            )
+
+            Text(
+                text = greeting,
+                color = MaterialTheme.colorScheme.onPrimary,
+                style = MaterialTheme.typography.titleLarge
+            )
+
+            Text(
+                text = dateText,
+                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
     }
 }

@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.shehab.zad.presentation.screens.ayah.AyahScreen
+import com.shehab.zad.presentation.screens.home.HomeRoute
 import com.shehab.zad.presentation.screens.surahs.SurahListScreen
 import com.shehab.zad.presentation.screens.home.HomeScreen
 import com.shehab.zad.presentation.screens.prayer.PrayerRoute
@@ -29,7 +30,7 @@ fun ZadNavGraph(
         startDestination = Screen.Home.route
     ){
         composable (Screen.Home.route){
-            HomeScreen()
+            HomeRoute()
         }
         composable(Screen.Quran.route) {
             SurahListScreen(

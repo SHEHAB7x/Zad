@@ -1,5 +1,6 @@
 package com.shehab.zad.presentation.screens.home
 
+import android.Manifest
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,17 +11,54 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.shehab.zad.R
 import com.shehab.zad.presentation.screens.home.components.AzkarCard
 import com.shehab.zad.presentation.screens.home.components.GreetingHeader
 import com.shehab.zad.presentation.screens.home.components.PrayerTimeCard
 import com.shehab.zad.presentation.screens.home.components.QuickAccessGrid
-import com.shehab.zad.presentation.theme.ZadTheme
+
+@OptIn(ExperimentalPermissionsApi::class)
+@Composable
+fun HomeRoute(
+    viewModel: HomeViewModel = hiltViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val locationPermission = rememberPermissionState(
+        Manifest.permission.ACCESS_FINE_LOCATION
+    ){ isGranted ->
+        if (isGranted) viewModel.loadHomeData()
+    }
+
+    LaunchedEffect(Unit) {
+        if (locationPermission.status.isGranted) {
+            viewModel.loadHomeData()
+        } else {
+            locationPermission.launchPermissionRequest()
+        }
+    }
+    HomeScreen(uiState = uiState)
+}
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    uiState: HomeUiState
+) {
+    val backgroundImage =
+        if (uiState.isDay) {
+            R.drawable.home_day
+        } else {
+            R.drawable.home_night
+        }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -28,33 +66,42 @@ fun HomeScreen() {
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        GreetingHeader(
-            greeting = "Good Morning",
-            dateText = "الثلاثاء ذو الحجة 1446"
-        )  // هنا المفروض view model هو اللي بيجيب الداتا
 
-        PrayerTimeCard()
+        GreetingHeader(
+            greeting = uiState.greeting,
+            dateText = uiState.dateText,
+            backgroundImage = backgroundImage
+        )
+
+        PrayerTimeCard(
+            nextPrayerName = uiState.nextPrayerRow?.nameAr.orEmpty(),
+            nextPrayerNameEn = uiState.nextPrayerRow?.nameEn.orEmpty(),
+            nextPrayerTime = uiState.nextPrayerRow?.time.orEmpty(),
+            timeUntilNextPrayer = uiState.timeUntilNext.orEmpty(),
+            prayerTimes = uiState.prayerRows
+        )
 
         SectionLabel(text = "Quick Access")
 
         QuickAccessGrid(
-            onItemClick = { item ->
-
+            onItemClick = {
+                // TODO
             }
         )
 
-        SectionLabel(text = "AZKAR OF THE DAY", modifier = Modifier.padding(horizontal = 16.dp))
-
-        AzkarCard(
-            title    = "أذكار الصباح",
-            subtitle = "Morning azkar · 12 remaining",
-            onClick  = {
-
-            },
+        SectionLabel(
+            text = "AZKAR OF THE DAY",
             modifier = Modifier.padding(horizontal = 16.dp)
         )
 
-
+        AzkarCard(
+            title = "أذكار الصباح",
+            subtitle = "Morning azkar · 12 remaining",
+            onClick = {
+                // TODO
+            },
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
     }
 }
 
@@ -62,19 +109,11 @@ fun HomeScreen() {
 fun SectionLabel(
     text: String,
     modifier: Modifier = Modifier
-    ) {
+) {
     Text(
         text = text,
         style = MaterialTheme.typography.labelSmall,
         color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
         modifier = modifier.padding(horizontal = 16.dp)
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun HomeScreenPreview(){
-    ZadTheme {
-        HomeScreen()
-    }
 }
