@@ -29,7 +29,11 @@ import com.shehab.zad.presentation.screens.home.components.QuickAccessGrid
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun HomeRoute(
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
+    onNavigateToQuran: () -> Unit,
+    onNavigateToQibla: () -> Unit,
+    onNavigateToPrayer: () -> Unit,
+    onNavigateToAzkar: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val locationPermission = rememberPermissionState(
@@ -45,12 +49,21 @@ fun HomeRoute(
             locationPermission.launchPermissionRequest()
         }
     }
-    HomeScreen(uiState = uiState)
+    HomeScreen(
+        uiState            = uiState,
+        onNavigateToQuran  = onNavigateToQuran,
+        onNavigateToQibla  = onNavigateToQibla,
+        onNavigateToPrayer = onNavigateToPrayer,
+        onNavigateToAzkar  = onNavigateToAzkar)
 }
 
 @Composable
 fun HomeScreen(
-    uiState: HomeUiState
+    uiState: HomeUiState,
+    onNavigateToQuran: () -> Unit = {},
+    onNavigateToQibla: () -> Unit = {},
+    onNavigateToPrayer: () -> Unit = {},
+    onNavigateToAzkar: () -> Unit = {}
 ) {
     val backgroundImage =
         if (uiState.isDay) {
@@ -81,25 +94,28 @@ fun HomeScreen(
             prayerTimes = uiState.prayerRows
         )
 
-        SectionLabel(text = "Quick Access")
+        SectionLabel(text = "الوصول السريع")
 
         QuickAccessGrid(
-            onItemClick = {
-                // TODO
+            onItemClick = {item ->
+                when (item.titleAr) {
+                    "القرآن الكريم" -> onNavigateToQuran()
+                    "اتجاه القبلة" -> onNavigateToQibla()
+                    "الأذكار"       -> onNavigateToAzkar()
+                    "مواقيت الصلاة" -> onNavigateToPrayer()
+                }
             }
         )
 
         SectionLabel(
-            text = "AZKAR OF THE DAY",
+            text = "أذكار اليوم",
             modifier = Modifier.padding(horizontal = 16.dp)
         )
 
         AzkarCard(
             title = "أذكار الصباح",
             subtitle = "Morning azkar · 12 remaining",
-            onClick = {
-                // TODO
-            },
+            onClick = onNavigateToAzkar,
             modifier = Modifier.padding(horizontal = 16.dp)
         )
     }

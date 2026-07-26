@@ -1,8 +1,10 @@
 package com.shehab.zad.di
 
 import com.shehab.zad.data.repository.PrayerRepositoryImpl
+import com.shehab.zad.data.repository.QiblaRepositoryImpl
 import com.shehab.zad.data.repository.QuranRepositoryImp
 import com.shehab.zad.domain.repository.PrayerRepository
+import com.shehab.zad.domain.repository.QiblaRepository
 import com.shehab.zad.domain.repository.QuranRepository
 import dagger.Binds
 import dagger.Module
@@ -25,4 +27,10 @@ abstract class RepositoryModule {
     abstract fun bindPrayerRepository(
         prayerRepositoryImpl: PrayerRepositoryImpl
     ): PrayerRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindQiblaRepository(
+        qiblaRepositoryImpl: QiblaRepositoryImpl
+    ): QiblaRepository
 }

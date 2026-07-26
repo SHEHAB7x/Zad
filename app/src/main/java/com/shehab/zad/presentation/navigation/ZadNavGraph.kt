@@ -16,6 +16,7 @@ import com.shehab.zad.presentation.screens.home.HomeRoute
 import com.shehab.zad.presentation.screens.surahs.SurahListScreen
 import com.shehab.zad.presentation.screens.home.HomeScreen
 import com.shehab.zad.presentation.screens.prayer.PrayerRoute
+import com.shehab.zad.presentation.screens.qibla.QiblaRoute
 
 @Composable
 fun ZadNavGraph(
@@ -30,7 +31,12 @@ fun ZadNavGraph(
         startDestination = Screen.Home.route
     ){
         composable (Screen.Home.route){
-            HomeRoute()
+            HomeRoute(
+                onNavigateToQuran  = { navController.navigate(Screen.Quran.route) },
+                onNavigateToQibla  = { navController.navigate(Screen.Qibla.route) },
+                onNavigateToPrayer = { navController.navigate(Screen.Prayer.route) },
+                onNavigateToAzkar  = { navController.navigate(Screen.Azkar.route) }
+            )
         }
         composable(Screen.Quran.route) {
             SurahListScreen(
@@ -58,7 +64,7 @@ fun ZadNavGraph(
             Text("Tafseer — coming soon")
         }
         composable(Screen.Qibla.route) {
-            Text("Qibla — coming soon")
+            QiblaRoute()
         }
         composable(Screen.Settings.route) {
             Text("Settings - coming soon")
