@@ -33,33 +33,18 @@ fun QiblaCompass(
         modifier = modifier
     ) {
         CompassTicks(modifier = Modifier.fillMaxSize())
-        CompassDirections()
         CompassNeedle(modifier = Modifier.fillMaxSize(), rotation = animatedRotation)
-        KaabaIndicator(
+        Text(
+            text = "🕋",
+            fontSize = 26.sp,
             modifier = Modifier
-                .align(Alignment.Center)
-                .graphicsLayer { rotationZ = animatedRotation },
-            rotation = animatedRotation
+                .align(Alignment.TopCenter)
+                .offset(y = 12.dp)
         )
         CompassCenter(modifier = Modifier.align(Alignment.Center))
     }
 }
 
-@Composable
-fun KaabaIndicator(
-    modifier: Modifier = Modifier,
-    rotation: Float = 0f
-) {
-    Box(
-        modifier = modifier
-            .offset(y = (-70).dp)
-    ) {
-        Text(
-            text = "🕋",
-            fontSize = 20.sp
-        )
-    }
-}
 
 @Preview(
     showBackground = true,
