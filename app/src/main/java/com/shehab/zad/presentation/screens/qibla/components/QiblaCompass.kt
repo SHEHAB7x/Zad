@@ -3,8 +3,11 @@ package com.shehab.zad.presentation.screens.qibla.components
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -12,6 +15,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shehab.zad.presentation.theme.ZadTheme
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun QiblaCompass(
@@ -30,7 +35,29 @@ fun QiblaCompass(
         CompassTicks(modifier = Modifier.fillMaxSize())
         CompassDirections()
         CompassNeedle(modifier = Modifier.fillMaxSize(), rotation = animatedRotation)
+        KaabaIndicator(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .graphicsLayer { rotationZ = animatedRotation },
+            rotation = animatedRotation
+        )
         CompassCenter(modifier = Modifier.align(Alignment.Center))
+    }
+}
+
+@Composable
+fun KaabaIndicator(
+    modifier: Modifier = Modifier,
+    rotation: Float = 0f
+) {
+    Box(
+        modifier = modifier
+            .offset(y = (-70).dp)
+    ) {
+        Text(
+            text = "🕋",
+            fontSize = 20.sp
+        )
     }
 }
 

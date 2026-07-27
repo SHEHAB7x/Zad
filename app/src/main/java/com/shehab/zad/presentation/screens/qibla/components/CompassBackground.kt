@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,7 +35,7 @@ fun CompassBackground(
             modifier = Modifier
                 .fillMaxSize()
                 .clip(CircleShape)
-                .background(ZadBackground)
+                .background(MaterialTheme.colorScheme.background)
                 .border(
                     width = 2.dp,
                     color = ZadSurface,
@@ -47,7 +48,7 @@ fun CompassBackground(
                 modifier = Modifier
                     .size(innerSize)
                     .clip(CircleShape)
-                    .background(ZadSurface)
+                    .background(MaterialTheme.colorScheme.surface)
                     .border(
                         width = 1.dp,
                         color = ZadGold.copy(alpha = 0.25f),

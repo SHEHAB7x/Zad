@@ -1,6 +1,7 @@
 package com.shehab.zad.presentation.screens.qibla
 
 import android.Manifest
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,7 +35,8 @@ fun QiblaScreen(uiState: QiblaUiState) {
                 .fillMaxSize()
                 .padding(padding)
                 .padding(horizontal = 24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
             Spacer(Modifier.height(24.dp))
 

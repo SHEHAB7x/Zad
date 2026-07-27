@@ -32,7 +32,7 @@ fun QiblaInfoCard(
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(20.dp))
-            .background(ZadSurface)
+            .background(MaterialTheme.colorScheme.surface)
             .padding(20.dp)
     ) {
 
@@ -74,13 +74,13 @@ private fun InfoRow(
 
         Text(
             text = title,
-            color = ZadTextSecondary,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
             style = MaterialTheme.typography.bodyMedium
         )
 
         Text(
             text = value,
-            color = ZadGold,
+            color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.titleMedium
         )
 
@@ -92,11 +92,10 @@ private fun InfoRow(
 private fun AccuracyRow(
     accurate: Boolean
 ) {
-
     Row(
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-
         Box(
             modifier = Modifier
                 .padding(end = 10.dp)
@@ -112,7 +111,5 @@ private fun AccuracyRow(
             color = if (accurate) ZadGreen else MaterialTheme.colorScheme.error,
             style = MaterialTheme.typography.bodyMedium
         )
-
     }
-
 }
