@@ -29,7 +29,7 @@ fun QiblaCompass(
     ) {
         CompassTicks(modifier = Modifier.fillMaxSize())
         CompassDirections()
-        CompassNeedle(modifier = Modifier.fillMaxSize(), rotation = 35f)
+        CompassNeedle(modifier = Modifier.fillMaxSize(), rotation = animatedRotation)
         CompassCenter(modifier = Modifier.align(Alignment.Center))
     }
 }

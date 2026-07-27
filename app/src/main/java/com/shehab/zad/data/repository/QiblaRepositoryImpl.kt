@@ -11,24 +11,6 @@ import javax.inject.Inject
 
 class QiblaRepositoryImpl @Inject constructor(
     private val sensorProvider: SensorProvider,
-    private val prayerRepository: PrayerRepository
 ): QiblaRepository {
-    override fun getQiblaDirection(): Flow<Resource<Float>> = flow {
-        val location = prayerRepository.getLocation()
-
-        if (location is Resource.Error){
-            emit(Resource.Error("تعذر الحصول على الموقع"))
-            return@flow
-        }
-
-        val (lat, lon) = location.data!!
-
-        val qiblaBearing = QiblaCalculator.calculateQiblaDirection(lat,lon)
-
-        sensorProvider.getAzimuth().collect { azimuth ->
-            val needleRotation = (qiblaBearing - azimuth + 360) % 360
-            emit(Resource.Success(needleRotation))
-        }
-
-    }
+    override fun getAzimuthStream(): Flow<Float> = sensorProvider.getAzimuth()
 }

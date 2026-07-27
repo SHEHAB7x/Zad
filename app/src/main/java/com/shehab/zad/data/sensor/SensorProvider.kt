@@ -5,6 +5,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.util.Log
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -41,6 +42,7 @@ class SensorProvider @Inject constructor(
                     SensorManager.getOrientation(rotationMatrix, orientation)
                     val azimuth = Math.toDegrees(orientation[0].toDouble()).toFloat()
                     val normalized = (azimuth + 360) % 360
+                    Log.d("SensorProvider", "Azimuth emitted: $normalized")
                     trySend(normalized)
                 }
             }

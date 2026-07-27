@@ -8,6 +8,5 @@ import javax.inject.Inject
 class GetQiblaDirectionUseCase @Inject constructor(
     private val repository: QiblaRepository
 ) {
-    operator fun invoke(): Flow<Resource<Float>> =
-        repository.getQiblaDirection()
+    operator fun invoke(): Flow<Float> = repository.getAzimuthStream()
 }

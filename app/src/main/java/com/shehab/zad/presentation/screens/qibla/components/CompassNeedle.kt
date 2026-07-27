@@ -31,10 +31,7 @@ fun CompassNeedle(
 
         val width = length * .14f
 
-        //--------------------
         // Gold Head
-        //--------------------
-
         val head = Path().apply {
 
             moveTo(center.x, center.y - length)
@@ -53,10 +50,7 @@ fun CompassNeedle(
             color = ZadGold
         )
 
-        //--------------------
         // Green Tail
-        //--------------------
-
         val tail = Path().apply {
 
             moveTo(center.x, center.y + length * .55f)
@@ -75,10 +69,7 @@ fun CompassNeedle(
             color = ZadGreen
         )
 
-        //--------------------
         // Center Spine
-        //--------------------
-
         drawLine(
             color = ZadGold.copy(alpha = .35f),
             start = Offset(center.x, center.y - length),

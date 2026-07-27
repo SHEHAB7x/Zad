@@ -1,5 +1,6 @@
 package com.shehab.zad.presentation.screens.qibla
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shehab.zad.domain.repository.PrayerRepository
@@ -24,33 +25,43 @@ class QiblaViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(QiblaUiState())
     val uiState: StateFlow<QiblaUiState> = _uiState.asStateFlow()
 
-    fun startQibla() {
-        viewModelScope.launch {
-            val location = prayerRepository.getLocation()
-            if (location is Resource.Success) {
-                val (lat, lon) = location.data!!
-                val bearing  = QiblaCalculator.calculateQiblaDirection(lat, lon)
-                val distance = QiblaCalculator.calculateDistanceToMecca(lat, lon)
-                val city     = getCityName()
+    private var isStarted = false
 
-                _uiState.update {
-                    it.copy(
-                        qiblaBearing = bearing,
-                        distanceKm   = distance,
-                        cityName     = city
-                    )
-                }
+    fun startQibla() {
+        if (isStarted) return
+        isStarted = true
+        viewModelScope.launch {
+            Log.d("QiblaViewModel", "startQibla called")
+            val location = prayerRepository.getLocation()
+            Log.d("QiblaViewModel", "location result: $location")
+
+            if (location is Resource.Error) {
+                _uiState.update { it.copy(error = "تعذر الحصول على الموقع") }
+                return@launch
             }
 
-            getQiblaDirection.invoke().collect { resource ->
-                when (resource) {
-                    is Resource.Loading -> _uiState.update { it.copy(isLoading = true) }
-                    is Resource.Success -> _uiState.update {
-                        it.copy(isLoading = false, needleRotation = resource.data!!)
-                    }
-                    is Resource.Error   -> _uiState.update {
-                        it.copy(isLoading = false, error = resource.message)
-                    }
+            val (lat, lon) = location.data!!
+            val bearing  = QiblaCalculator.calculateQiblaDirection(lat, lon)
+            val distance = QiblaCalculator.calculateDistanceToMecca(lat, lon)
+            val city     = getCityName()
+
+            _uiState.update {
+                it.copy(
+                    qiblaBearing = bearing,
+                    distanceKm   = distance,
+                    cityName     = city
+                )
+            }
+
+            getQiblaDirection.invoke().collect { azimuth ->
+                Log.d("QiblaViewModel", "azimuth received: $azimuth")
+                val needleRotation = (bearing - azimuth + 360) % 360
+                Log.d("QiblaViewModel", "needleRotation: $needleRotation")
+                _uiState.update {
+                    it.copy(
+                        needleRotation = needleRotation,
+                        isLoading = false
+                    )
                 }
             }
         }
